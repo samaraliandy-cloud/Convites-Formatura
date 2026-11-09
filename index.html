@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Convite de Formatura - Dra. Samara Costa</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Great+Vibes&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        bordo: '#6B1D2F',
+                        bordoDark: '#4A111F',
+                        bordoLight: '#8A2B42',
+                        gold: '#D4AF37',
+                        goldLight: '#F3E5AB',
+                        goldDark: '#AA8C2C',
+                    },
+                    fontFamily: {
+                        cinzel: ['Cinzel', 'serif'],
+                        vibes: ['Great Vibes', 'cursive'],
+                        montserrat: ['Montserrat', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #3b0a14;
+            margin: 0;
+            padding: 0;
+        }
+        .gold-gradient {
+            background: linear-gradient(135deg, #BF953F 0%, #FCF6BA 25%, #B38728 50%, #FBF5B7 75%, #AA771C 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .gold-bg {
+            background: linear-gradient(135deg, #BF953F 0%, #D4AF37 50%, #AA771C 100%);
+        }
+        /* Envelope opening animation */
+        .envelope-flap {
+            transition: transform 0.8s ease-in-out;
+            transform-origin: top;
+        }
+        .open-flap {
+            transform: rotateX(180deg);
+        }
+        @keyframes pulse-gold {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 15px rgba(212, 175, 55, 0.5); }
+            50% { transform: scale(1.08); box-shadow: 0 0 25px rgba(212, 175, 55, 0.9); }
+        }
+        .seal-pulse {
+            animation: pulse-gold 2s infinite;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center">
+
+    <!-- APP CONTAINER -->
+    <div id="app" class="w-full max-w-md min-h-screen md:h-[850px] md:rounded-3xl shadow-2xl relative overflow-hidden bg-[#521321] flex flex-col items-center justify-center">
+
+        <!-- TELA 1: ENVELOPE INTERATIVO -->
+        <div id="envelope-screen" class="absolute inset-0 z-30 flex flex-col items-center justify-center bg-[#521321] transition-opacity duration-700">
+            <div class="relative w-full h-full max-w-md max-h-[850px] bg-[#6B1D2F] shadow-2xl overflow-hidden flex flex-col items-center justify-center border-4 border-[#8A2B42]">
+                
+                <!-- Envelope Folds Background -->
+                <div class="absolute inset-0 pointer-events-none opacity-40">
+                    <div class="absolute top-0 left-0 w-full h-1/2 bg-gradient-to-b from-[#4A111F] to-transparent"></div>
+                    <div class="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-[#4A111F] to-transparent"></div>
+                    <div class="absolute top-0 left-0 w-1/2 h-full bg-gradient-to-r from-[#4A111F] to-transparent"></div>
+                    <div class="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-[#4A111F] to-transparent"></div>
+                </div>
+
+                <!-- Aba superior do envelope -->
+                <div id="envelope-flap" class="absolute top-0 left-0 w-0 h-0 border-l-[220px] border-l-transparent border-r-[220px] border-r-transparent border-t-[250px] border-t-[#5A1727] z-20 envelope-flap shadow-lg"></div>
+
+                <!-- Selo de Cera Dourado com o Símbolo de Odontologia -->
+                <div onclick="openEnvelope()" class="absolute z-40 cursor-pointer flex flex-col items-center group select-none">
+                    <div class="w-24 h-24 rounded-full gold-bg shadow-2xl flex items-center justify-center border-4 border-[#FFE58F] seal-pulse transition-transform transform group-hover:scale-110">
+                        <div class="w-20 h-20 rounded-full border-2 border-dashed border-[#6B1D2F] flex items-center justify-center bg-gradient-to-br from-[#E6C667] to-[#99731C]">
+                            <i class="fa-solid fa-tooth text-3xl text-[#521321] drop-shadow-md"></i>
+                        </div>
+                    </div>
+                    <span class="mt-3 text-gold font-cinzel text-xs tracking-widest font-bold uppercase bg-[#4A111F]/90 px-4 py-1.5 rounded-full border border-gold/40 shadow-lg">
+                        Clique para abrir
+                    </span>
+                </div>
+
+                <!-- Texto de introdução no envelope -->
+                <div class="absolute bottom-12 text-center z-10 px-6 pointer-events-none">
+                    <p class="font-vibes text-3xl text-goldLight mb-1">Convite Especial</p>
+                    <p class="font-cinzel text-xs text-white/80 tracking-widest uppercase">Formatura em Odontologia</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- TELA 2: CARTA / CONVITE ABERTO -->
+        <div id="invitation-screen" class="absolute inset-0 w-full h-full bg-white text-[#4A111F] flex flex-col overflow-y-auto opacity-0 pointer-events-none transition-opacity duration-700 z-20">
+            
+            <!-- Foto da Formanda no Topo -->
+            <div class="relative w-full h-[380px] sm:h-[400px] bg-gray-900 overflow-hidden shadow-md shrink-0">
+                <img src="https://images.unsplash.com/photo-1594824813572-d41935e4070a?auto=format&fit=crop&w=800&q=80" 
+                     onerror="this.src='https://placehold.co/600x800/6B1D2F/FFFFFF?text=Dra.+Samara+Costa'" 
+                     alt="Dra. Samara Costa" 
+                     class="w-full h-full object-cover object-top brightness-95">
+                <div class="absolute inset-0 bg-gradient-to-t from-white via-transparent to-black/20"></div>
+            </div>
+
+            <!-- Conteúdo da Carta -->
+            <div class="flex-1 px-6 py-8 flex flex-col items-center text-center bg-white relative">
+                
+                <!-- Ramos ornamentais laterais -->
+                <div class="absolute right-0 bottom-10 pointer-events-none opacity-50">
+                    <svg width="80" height="160" viewBox="0 0 100 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M90 10C70 50 30 90 10 180" stroke="#8A9A86" stroke-width="2"/>
+                        <circle cx="70" cy="30" r="5" fill="#D4AF37"/>
+                        <circle cx="50" cy="70" r="4" fill="#8A9A86"/>
+                        <circle cx="30" cy="110" r="5" fill="#D4AF37"/>
+                    </svg>
+                </div>
+
+                <!-- Nome da Formanda -->
+                <h1 class="font-vibes text-5xl sm:text-6xl text-[#6B1D2F] mb-1 drop-shadow-sm">
+                    Dra. Samara Costa
+                </h1>
+                <p class="font-cinzel text-xs sm:text-sm tracking-[0.25em] text-[#8A2B42] uppercase font-semibold mb-6">
+                    Convida para sua Formatura em Odontologia
+                </p>
+
+                <!-- Data Principal -->
+                <div class="w-full max-w-xs mx-auto mb-6">
+                    <div class="border-t border-b border-[#D4AF37] py-2 my-2">
+                        <p class="font-cinzel text-base sm:text-lg font-bold text-[#4A111F] tracking-wide">
+                            19 DE DEZEMBRO DE 2026
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Local e Horário -->
+                <div class="mb-6 space-y-1">
+                    <p class="font-cinzel font-semibold text-lg text-[#6B1D2F]">
+                        ÀS 20H • CLASSIC HALL
+                    </p>
+                    <p class="font-montserrat text-xs sm:text-sm text-gray-600 max-w-xs leading-relaxed px-2">
+                        Av. Gov. Agamenon Magalhães, S/N - Salgadinho, Olinda - PE, 53110-710
+                    </p>
+                </div>
+
+                <!-- Botão Ver Localização -->
+                <a href="https://maps.google.com/?q=Classic+Hall+Olinda+PE" target="_blank" 
+                   class="inline-flex items-center gap-2 px-6 py-3 bg-[#6B1D2F] text-gold font-cinzel text-xs font-bold tracking-widest rounded-full shadow-lg hover:bg-[#8A2B42] transition-all transform hover:scale-105 mb-6 border border-gold/40">
+                    <i class="fa-solid fa-location-dot"></i> Ver Localização no Mapa
+                </a>
+
+                <!-- Confirmação de Presença -->
+                <div class="bg-[#FDF8F9] border border-[#EED7DB] rounded-2xl p-5 w-full max-w-sm shadow-sm mb-6">
+                    <p class="font-montserrat text-xs sm:text-sm text-[#4A111F] leading-relaxed mb-4">
+                        Confirme sua presença até <strong class="text-[#6B1D2F]">01 de Dezembro</strong> pelo número <span class="whitespace-nowrap font-semibold">81 99618-5962</span>. Te espero lá!
+                    </p>
+                    
+                    <button onclick="openRSVPModal()" class="w-full py-3 bg-gradient-to-r from-[#D4AF37] to-[#AA771C] text-[#3b0a14] font-cinzel text-xs font-bold tracking-widest rounded-xl shadow-md hover:brightness-110 transition-all flex items-center justify-center gap-2">
+                        <i class="fa-brands fa-whatsapp text-base"></i> Confirmar Presença via WhatsApp
+                    </button>
+                </div>
+
+                <!-- Rodapé -->
+                <div class="text-[10px] font-montserrat text-gray-400 tracking-wider pb-4">
+                    ODONTOLOGIA • 2026
+                </div>
+
+            </div>
+        </div>
+
+        <!-- MODAL DE CONFIRMAÇÃO (RSVP) -->
+        <div id="rsvp-modal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 hidden">
+            <div class="bg-white rounded-3xl max-w-sm w-full p-6 shadow-2xl border-2 border-gold relative">
+                <button onclick="closeRSVPModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-700 w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center font-bold">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+
+                <div class="text-center mb-5">
+                    <div class="w-12 h-12 rounded-full bg-[#6B1D2F]/10 text-[#6B1D2F] flex items-center justify-center mx-auto mb-3 text-xl">
+                        <i class="fa-solid fa-envelope-open-text"></i>
+                    </div>
+                    <h3 class="font-cinzel text-xl font-bold text-[#6B1D2F]">Confirmação de Presença</h3>
+                    <p class="font-montserrat text-xs text-gray-500 mt-1">Preencha seus dados para enviar a confirmação via WhatsApp.</p>
+                </div>
+
+                <div class="space-y-4">
+                    <div>
+                        <label class="block font-cinzel text-xs font-semibold text-[#6B1D2F] mb-1">Nome Completo do Convidado</label>
+                        <input type="text" id="guest-name" placeholder="Digite seu nome completo" 
+                               class="w-full px-4 py-2.5 text-sm rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#6B1D2F] font-montserrat">
+                    </div>
+
+                    <div>
+                        <label class="block font-cinzel text-xs font-semibold text-[#6B1D2F] mb-1">Você comparecerá?</label>
+                        <select id="guest-status" class="w-full px-4 py-2.5 text-sm rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#6B1D2F] font-montserrat bg-white">
+                            <option value="Sim, estarei presente! 🎓">Sim, estarei presente! 🎓</option>
+                            <option value="Infelizmente não poderei comparecer.">Infelizmente não poderei comparecer.</option>
+                        </select>
+                    </div>
+
+                    <button onclick="sendWhatsAppMessage()" class="w-full py-3.5 bg-[#6B1D2F] text-gold font-cinzel text-xs font-bold tracking-widest rounded-xl shadow-lg hover:bg-[#8A2B42] transition-all flex items-center justify-center gap-2 mt-2">
+                        <i class="fa-brands fa-whatsapp text-lg"></i> Enviar Mensagem para a Formanda
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        function openEnvelope() {
+            const flap = document.getElementById('envelope-flap');
+            const envelopeScreen = document.getElementById('envelope-screen');
+            const invitationScreen = document.getElementById('invitation-screen');
+
+            // Anima a aba do envelope
+            flap.classList.add('open-flap');
+
+            // Transição para revelar o convite
+            setTimeout(() => {
+                envelopeScreen.style.opacity = '0';
+                setTimeout(() => {
+                    envelopeScreen.style.display = 'none';
+                    invitationScreen.style.pointerEvents = 'auto';
+                    invitationScreen.style.opacity = '1';
+                }, 500);
+            }, 600);
+        }
+
+        function openRSVPModal() {
+            document.getElementById('rsvp-modal').classList.remove('hidden');
+        }
+
+        function closeRSVPModal() {
+            document.getElementById('rsvp-modal').classList.add('hidden');
+        }
+
+        function sendWhatsAppMessage() {
+            const name = document.getElementById('guest-name').value.trim();
+            const status = document.getElementById('guest-status').value;
+
+            if (!name) {
+                showToast("Por favor, digite seu nome completo.");
+                return;
+            }
+
+            const phone = "5581996185962";
+            const message = `Olá, Dra. Samara! Meu nome é *${name}*. ${status} Confirmei minha presença através do convite digital. Nos vemos na formatura! 🎉`;
+            const encodedMessage = encodeURIComponent(message);
+            
+            const whatsappUrl = `https://wa.me/${phone}?text=${encodedMessage}`;
+            window.open(whatsappUrl, '_blank');
+            closeRSVPModal();
+        }
+
+        function showToast(text) {
+            const existing = document.getElementById('custom-toast');
+            if (existing) existing.remove();
+
+            const toast = document.createElement('div');
+            toast.id = 'custom-toast';
+            toast.className = 'fixed top-6 left-1/2 transform -translate-x-1/2 z-50 bg-[#6B1D2F] text-white px-6 py-3 rounded-2xl shadow-2xl border border-gold font-montserrat text-xs flex items-center gap-3 animate-pulse';
+            toast.innerHTML = `<i class="fa-solid fa-circle-exclamation text-gold text-base"></i> <span>${text}</span>`;
+            document.body.appendChild(toast);
+
+            setTimeout(() => {
+                toast.remove();
+            }, 3500);
+        }
+    </script>
+</body>
+</html>
