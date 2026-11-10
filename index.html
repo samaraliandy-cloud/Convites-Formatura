@@ -1,285 +1,606 @@
+# Convite Digital de Formatura - Dra. Samara Costa
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Convite de Formatura - Dra. Samara Costa</title>
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Great+Vibes&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <!-- FontAwesome for icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts para replicar a tipografia do modelo -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,600;1,400&display=swap" rel="stylesheet">
     
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        bordo: '#6B1D2F',
-                        bordoDark: '#4A111F',
-                        bordoLight: '#8A2B42',
-                        gold: '#D4AF37',
-                        goldLight: '#F3E5AB',
-                        goldDark: '#AA8C2C',
-                    },
-                    fontFamily: {
-                        cinzel: ['Cinzel', 'serif'],
-                        vibes: ['Great Vibes', 'cursive'],
-                        montserrat: ['Montserrat', 'sans-serif'],
-                    }
-                }
-            }
-        }
-    </script>
     <style>
-        body {
-            font-family: 'Montserrat', sans-serif;
-            background-color: #3b0a14;
+        :root {
+            --bordo-escuro: #4A0E17;
+            --bordo-principal: #6B1D2F;
+            --bordo-claro: #8B263E;
+            --dourado-menu: #A38244;
+            --creme-fundo: #FCF9F5;
+            --texto-cinza: #6E6E6E;
+
+            --bordo-texto: #832338;
+        }
+
+        * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
         }
-        .gold-gradient {
-            background: linear-gradient(135deg, #BF953F 0%, #FCF6BA 25%, #B38728 50%, #FBF5B7 75%, #AA771C 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #120204;
+            color: var(--texto-cinza);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+            perspective: 1000px;
+
         }
-        .gold-bg {
-            background: linear-gradient(135deg, #BF953F 0%, #D4AF37 50%, #AA771C 100%);
+
+        /* Container do Envelope/Carta */
+        .envelope-container {
+            width: 100%;
+            max-width: 450px;
+            height: 95vh;
+            max-height: 850px;
+            position: relative;
+            background-color: var(--bordo-escuro);
+            border-radius: 12px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6), inset 0 0 100px rgba(0,0,0,0.4);
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
-        /* Envelope opening animation */
+
+        /* Abas do Envelope (Estilo Carta) */
+
         .envelope-flap {
-            transition: transform 0.8s ease-in-out;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 10;
+            pointer-events: none;
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-origin: center;
+        }
+
+        .flap-top {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-left: 225px solid transparent;
+
+            border-right: 225px solid transparent;
+            border-top: 250px solid var(--bordo-principal);
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
             transform-origin: top;
+            z-index: 12;
         }
-        .open-flap {
-            transform: rotateX(180deg);
+
+        .flap-bottom {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-left: 225px solid transparent;
+            border-right: 225px solid transparent;
+            border-bottom: 300px solid var(--bordo-claro);
+            filter: drop-shadow(0 -4px 8px rgba(0,0,0,0.2));
+            z-index: 11;
+            transform-origin: bottom;
+
         }
-        @keyframes pulse-gold {
-            0%, 100% { transform: scale(1); box-shadow: 0 0 15px rgba(212, 175, 55, 0.5); }
-            50% { transform: scale(1.08); box-shadow: 0 0 25px rgba(212, 175, 55, 0.9); }
+
+        .flap-left {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 0;
+            height: 0;
+            border-top: 425px solid transparent;
+            border-bottom: 425px solid transparent;
+            border-left: 225px solid var(--bordo-principal);
+            opacity: 0.95;
+            z-index: 11;
+            transform-origin: left;
         }
-        .seal-pulse {
-            animation: pulse-gold 2s infinite;
+
+        /* Lacre de Cera Dourado */
+        .lacre-cera {
+            position: absolute;
+
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(1);
+            width: 140px;
+            height: 140px;
+            background: radial-gradient(circle, #E5C483 0%, #C5A059 60%, #8C6D31 100%);
+            border-radius: 50%;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5), inset 0 2px 5px rgba(255,255,255,0.4);
+            z-index: 20;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border: 2px solid rgba(255,255,255,0.2);
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            padding: 10px;
         }
+
+
+        .lacre-cera:hover {
+            transform: translate(-50%, -50%) scale(1.08);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.6);
+        }
+
+        .brasao-container-real {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .monograma-texto {
+            font-family: 'Playfair Display', serif;
+            font-size: 32px;
+            font-style: italic;
+            font-weight: 600;
+
+            position: absolute;
+            z-index: 2;
+            letter-spacing: -2px;
+            color: var(--bordo-escuro);
+        }
+
+        .lacre-texto {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 8px;
+            color: var(--bordo-escuro);
+            font-weight: 700;
+            margin-top: 2px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            z-index: 5;
+        }
+
+        /* Estado Aberto do Envelope */
+        .envelope-container.aberto .flap-top { transform: rotateX(180deg) translateY(-120px); opacity: 0; z-index: 0; }
+
+        .envelope-container.aberto .flap-bottom { transform: rotateX(-180deg) translateY(150px); opacity: 0; z-index: 0; }
+        .envelope-container.aberto .flap-left { transform: rotateY(-180deg) translateX(-150px); opacity: 0; z-index: 0; }
+        .envelope-container.aberto .lacre-cera { opacity: 0; pointer-events: none; transform: translate(-50%, -50%) scale(0); }
+        .envelope-container.aberto .carta-conteudo { opacity: 1; transform: scale(1) translateY(0); z-index: 15; }
+
+        /* Conteúdo do Convite - RÉPLICA DO MODELO */
+        .carta-conteudo {
+            width: 94%;
+            height: 96%;
+            background-color: var(--creme-fundo);
+            border-radius: 4px;
+            overflow-y: auto;
+            position: relative;
+            z-index: 1;
+            opacity: 0;
+            transform: scale(0.9) translateY(20px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .carta-conteudo::-webkit-scrollbar { width: 4px; }
+        .carta-conteudo::-webkit-scrollbar-thumb { background-color: var(--dourado-menu); }
+
+        /* Foto Real Integrada no Topo */
+        .foto-topo-container {
+            width: 100%;
+            height: 330px;
+            position: relative;
+            overflow: hidden;
+            flex-shrink: 0;
+            background-color: #f5f5f5;
+        }
+
+        .foto-formanda {
+            width: 100%;
+            height: 100%;
+
+            object-fit: cover;
+            object-position: center 5%;
+            display: block;
+        }
+
+        /* Desvanecimento na base para mesclar com o papel creme */
+        .foto-topo-container::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 45px;
+            background: linear-gradient(to bottom, rgba(252, 249, 245, 0) 0%, rgba(252, 249, 245, 1) 100%);
+            pointer-events: none;
+        }
+
+        /* Arranjos de Folhas do Modelo */
+        .folha-decorativa {
+
+            position: absolute;
+            width: 95px;
+            height: auto;
+            opacity: 0.85;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .folha-esquerda {
+            top: 25px;
+            left: -12px;
+            transform: rotate(-5deg);
+        }
+
+        .folha-direita {
+            bottom: 15px;
+            right: -5px;
+        }
+
+
+        /* Corpo do Texto e Diagramação */
+        .corpo-convite {
+            padding: 5px 22px 25px 22px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            z-index: 3;
+            flex-grow: 1;
+        }
+
+        /* Escrita cursiva idêntica ao modelo impresso */
+        .nome-assinatura {
+            font-family: 'Alex Brush', cursive;
+            font-size: 52px;
+            color: var(--bordo-texto);
+            line-height: 1.1;
+            margin-bottom: 2px;
+
+            font-weight: 400;
+        }
+
+        .tagline-convite {
+            font-size: 10.5px;
+            text-transform: uppercase;
+            letter-spacing: 2.5px;
+            color: var(--texto-cinza);
+            font-weight: 500;
+            margin-bottom: 18px;
+        }
+
+        /* Linha Fina Divisora do Modelo */
+        .linha-divisora {
+            width: 85%;
+            height: 1px;
+            background-color: var(--dourado-menu);
+            margin: 10px 0;
+            opacity: 0.5;
+
+        }
+
+        .data-destaque {
+            font-size: 14.5px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: var(--bordo-texto);
+            font-weight: 600;
+        }
+
+        .local-titulo {
+            font-size: 13.5px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: var(--bordo-texto);
+            font-weight: 600;
+            margin-top: 5px;
+        }
+
+
+        .endereco-texto {
+            font-size: 11px;
+            color: var(--texto-cinza);
+            line-height: 1.5;
+            margin-top: 4px;
+            font-weight: 400;
+            max-width: 310px;
+        }
+
+        .nota-confirmacao {
+            font-size: 11px;
+            color: var(--bordo-texto);
+            line-height: 1.5;
+            margin: 20px 0 15px 0;
+            font-weight: 500;
+            max-width: 320px;
+        }
+
+        /* Timer de Contagem Regressiva */
+
+        .timer-container {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 22px;
+            background-color: rgba(131, 35, 56, 0.04);
+            padding: 6px 18px;
+            border-radius: 20px;
+            border: 1px solid rgba(163, 130, 68, 0.18);
+        }
+
+        .timer-unidade {
+            font-size: 11.5px;
+            color: var(--texto-cinza);
+            font-weight: 500;
+        }
+
+        .timer-unidade span {
+            font-weight: 600;
+            color: var(--bordo-texto);
+
+        }
+
+        /* Botões de Ação Interativos */
+        .botoes-wrapper {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .btn-link {
+            width: 100%;
+            padding: 12px 20px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-wpp {
+            background-color: var(--bordo-texto);
+            color: white;
+            box-shadow: 0 4px 12px rgba(131, 35, 56, 0.2);
+        }
+
+        .btn-maps {
+            background-color: transparent;
+            color: var(--texto-cinza);
+            border: 1px solid var(--dourado-menu);
+        }
+
+
+        .btn-link:active {
+            transform: scale(0.99);
+        }
+
+        .icone-svg {
+            width: 14px;
+            height: 14px;
+            fill: currentColor;
+        }
+
+        /* Instrução Inicial */
+        .instrucao-inicial {
+            position: absolute;
+            bottom: 40px;
+            color: #E5C483;
+            font-size: 11px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            z-index: 15;
+
+            pointer-events: none;
+            text-align: center;
+            width: 100%;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+
+        .hidden-map { display: none; }
     </style>
 </head>
-<body class="min-h-screen flex items-center justify-center">
+<body>
 
-    <!-- APP CONTAINER -->
-    <div id="app" class="w-full max-w-md min-h-screen md:h-[850px] md:rounded-3xl shadow-2xl relative overflow-hidden bg-[#521321] flex flex-col items-center justify-center">
+    <!-- Vetores das Ilustrações das Laterais do Modelo -->
+    <svg style="display: none;">
 
-        <!-- TELA 1: ENVELOPE INTERATIVO -->
-        <div id="envelope-screen" class="absolute inset-0 z-30 flex flex-col items-center justify-center bg-[#521321] transition-opacity duration-700">
-            <div class="relative w-full h-full max-w-md max-h-[850px] bg-[#6B1D2F] shadow-2xl overflow-hidden flex flex-col items-center justify-center border-4 border-[#8A2B42]">
-                
-                <!-- Envelope Folds Background -->
-                <div class="absolute inset-0 pointer-events-none opacity-40">
-                    <div class="absolute top-0 left-0 w-full h-1/2 bg-gradient-to-b from-[#4A111F] to-transparent"></div>
-                    <div class="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-[#4A111F] to-transparent"></div>
-                    <div class="absolute top-0 left-0 w-1/2 h-full bg-gradient-to-r from-[#4A111F] to-transparent"></div>
-                    <div class="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-[#4A111F] to-transparent"></div>
-                </div>
+        <g id="ramo-ilustracao-esq">
+            <path d="M90,10 Q60,20 30,50 Q10,70 5,90" fill="none" stroke="#9A9A9A" stroke-width="1" opacity="0.6"/>
+            <path d="M40,32 Q25,25 20,35 Q30,42 40,32 Z" fill="#8A8A8A" opacity="0.4"/>
+            <path d="M60,20 Q50,10 42,18 Q50,28 60,20 Z" fill="#A38244" opacity="0.5"/>
+            <path d="M25,55 Q10,50 12,62 Q24,65 25,55 Z" fill="#9A9A9A" opacity="0.4"/>
+            <circle cx="52" cy="25" r="2" fill="#A38244"/>
+            <circle cx="32" cy="48" r="2" fill="#A38244"/>
+        </g>
+        <g id="ramo-ilustracao-dir">
+            <path d="M10,80 Q40,65 65,35 Q85,15 90,5" fill="none" stroke="#9A9A9A" stroke-width="1" opacity="0.6"/>
+            <path d="M50,45 Q65,50 70,40 Q58,35 50,45 Z" fill="#8A8A8A" opacity="0.4"/>
+            <path d="M32,62 Q45,70 50,58 Q38,52 32,62 Z" fill="#A38244" opacity="0.6"/>
+            <path d="M68,25 Q82,28 80,16 Q68,15 68,25 Z" fill="#9A9A9A" opacity="0.5"/>
+            <circle cx="42" cy="58" r="2.5" fill="#A38244"/>
+            <circle cx="62" cy="35" r="2" fill="#A38244"/>
+        </g>
+        <g id="lacre-louros">
+            <circle cx="50" cy="50" r="35" fill="none" stroke="currentColor" stroke-width="1" stroke-dasharray="2,2" opacity="0.4"/>
+            <path d="M22,40 Q16,45 20,50 Q26,45 22,40 Z M20,52 Q14,58 18,62 Q25,56 20,52 Z M25,65 Q20,72 26,75 Q31,68 25,65 Z" fill="currentColor"/>
 
-                <!-- Aba superior do envelope -->
-                <div id="envelope-flap" class="absolute top-0 left-0 w-0 h-0 border-l-[220px] border-l-transparent border-r-[220px] border-r-transparent border-t-[250px] border-t-[#5A1727] z-20 envelope-flap shadow-lg"></div>
+            <path d="M78,40 Q84,45 80,50 Q74,45 78,40 Z M80,52 Q86,58 82,62 Q75,56 80,52 Z M75,65 Q80,72 74,75 Q69,68 75,65 Z" fill="currentColor"/>
+        </g>
+    </svg>
 
-                <!-- Selo de Cera Dourado com o Símbolo de Odontologia -->
-                <div onclick="openEnvelope()" class="absolute z-40 cursor-pointer flex flex-col items-center group select-none">
-                    <div class="w-24 h-24 rounded-full gold-bg shadow-2xl flex items-center justify-center border-4 border-[#FFE58F] seal-pulse transition-transform transform group-hover:scale-110">
-                        <div class="w-20 h-20 rounded-full border-2 border-dashed border-[#6B1D2F] flex items-center justify-center bg-gradient-to-br from-[#E6C667] to-[#99731C]">
-                            <i class="fa-solid fa-tooth text-3xl text-[#521321] drop-shadow-md"></i>
-                        </div>
-                    </div>
-                    <span class="mt-3 text-gold font-cinzel text-xs tracking-widest font-bold uppercase bg-[#4A111F]/90 px-4 py-1.5 rounded-full border border-gold/40 shadow-lg">
-                        Clique para abrir
-                    </span>
-                </div>
+    <div class="envelope-container" id="envelope">
+        <!-- Instrução Inicial -->
+        <div class="instrucao-inicial" id="txtInstrucao">Toque no lacre para abrir</div>
 
-                <!-- Texto de introdução no envelope -->
-                <div class="absolute bottom-12 text-center z-10 px-6 pointer-events-none">
-                    <p class="font-vibes text-3xl text-goldLight mb-1">Convite Especial</p>
-                    <p class="font-cinzel text-xs text-white/80 tracking-widest uppercase">Formatura em Odontologia</p>
-                </div>
+        <!-- Abas do Envelope -->
+        <div class="envelope-flap flap-top"></div>
+        <div class="envelope-flap flap-left"></div>
+        <div class="envelope-flap flap-bottom"></div>
+
+        <!-- Lacre de Cera -->
+        <div class="lacre-cera" id="lacreBttn" onclick="abrirConvite()">
+            <div class="brasao-container-real" style="color: var(--bordo-escuro);">
+                <svg viewBox="0 0 100 100" style="width: 100%; height: 100%; position: absolute;">
+                    <use href="#lacre-louros" />
+                </svg>
+
+                <div class="monograma-texto" style="font-size: 28px; font-family: 'Playfair Display', serif; top: 22px; left: 28px;">SC</div>
             </div>
+            <div class="lacre-texto">Abrir</div>
         </div>
 
-        <!-- TELA 2: CARTA / CONVITE ABERTO -->
-        <div id="invitation-screen" class="absolute inset-0 w-full h-full bg-white text-[#4A111F] flex flex-col overflow-y-auto opacity-0 pointer-events-none transition-opacity duration-700 z-20">
+        <!-- Conteúdo Interno da Carta (Com a Foto Embutida em Alta Resolução) -->
+        <div class="carta-conteudo">
             
-            <!-- Foto da Formanda no Topo -->
-            <div class="relative w-full h-[380px] sm:h-[400px] bg-gray-900 overflow-hidden shadow-md shrink-0">
-                <img src="https://images.unsplash.com/photo-1594824813572-d41935e4070a?auto=format&fit=crop&w=800&q=80" 
-                     onerror="this.src='https://placehold.co/600x800/6B1D2F/FFFFFF?text=Dra.+Samara+Costa'" 
-                     alt="Dra. Samara Costa" 
-                     class="w-full h-full object-cover object-top brightness-95">
-                <div class="absolute inset-0 bg-gradient-to-t from-white via-transparent to-black/20"></div>
-            </div>
-
-            <!-- Conteúdo da Carta -->
-            <div class="flex-1 px-6 py-8 flex flex-col items-center text-center bg-white relative">
+            <div class="foto-topo-container">
+                <!-- Foto real enviada processada em String Base64 inline para carregamento garantido -->
+                <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAIBAQEBAQIBAQECAgICAgQDAgICAgUEBAMEBgUGBgYFBgYGBwkIBgcJBwYGCAsICQoKCgoKBggLDAsKDAkKCgr/2wBDAQICAgICAgUDAwUKBwYHCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgr/wAARCAKAAXEDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVWV1WWMdGl53eXp7g4SFhoeIiYqSk5SVlpeYmZqio6SlmqOjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD6gooor7c/EwooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKAeaACikJwMmjvQAtFJmloAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAoooPNACU6EBrpEONrkKwIByM0mB1p0OfOX/eFAHqOifCjwzqGhWOpG6mDSvA10VnC7A+FIPpxmt/UPgd4I0gQz6hqmowR3LBIvMlT5iVDL/B6VwVp8ULiDw7baBLpSSW8XkGVA+DIVOR/49XW+IfjpbeMNOtrBPDwtriGeKZZPO3gFAAFx9M0wNofsz+F96yTeI9SSNnIV9yY7dfk/rWdffA7wjFqFzaWeuai32Y7Zg0yEIdm8f8ALP0rmfEPxx8a3+pLqH2uO03rGZIYoU2E+WFPUVzd/wDEPxRfS6ldPq8vmai4e5dflLkIEGMdPlFAj0vVfgt4T02zFzbeJ78TFFkjgldG3rv2/wDPHNef+MPCZ8P3aWsTsw8sOWZs59e3v61jT+NPEWpa1Y297rNyUWSNMbyAAGG0U/xF4n1HXLvzpbtgDHgANgAgdKAHeD5GHiC3fJ++f5GvX8nHWvHPCEijXbXLdXb9Fr2EnIzQB//Z" alt="Dra. Samara Costa" class="foto-formanda">
                 
-                <!-- Ramos ornamentais laterais -->
-                <div class="absolute right-0 bottom-10 pointer-events-none opacity-50">
-                    <svg width="80" height="160" viewBox="0 0 100 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M90 10C70 50 30 90 10 180" stroke="#8A9A86" stroke-width="2"/>
-                        <circle cx="70" cy="30" r="5" fill="#D4AF37"/>
-                        <circle cx="50" cy="70" r="4" fill="#8A9A86"/>
-                        <circle cx="30" cy="110" r="5" fill="#D4AF37"/>
-                    </svg>
+                <!-- Folha Decorativa Superior Esquerda -->
+                <svg class="folha-decorativa folha-esquerda" viewBox="0 0 100 100">
+                    <use href="#ramo-ilustracao-esq" />
+                </svg>
+            </div>
+
+            <!-- Corpo do Convite com Tipografia e Elementos do Modelo -->
+
+            <div class="corpo-convite">
+                
+                <!-- Nome em Cursiva Elegante -->
+                <h1 class="nome-assinatura">Dra. Samara Costa</h1>
+                <div class="tagline-convite">Convida para sua formatura</div>
+
+                <!-- Divisor Fino -->
+                <div class="linha-divisora"></div>
+
+                <!-- Informações de Data e Hora -->
+                <div class="data-destaque">19 de Dezembro de 2026</div>
+                
+                <div class="linha-divisora"></div>
+
+                <!-- Detalhes do Local -->
+                <div class="local-titulo">Às 20h Classic Hall</div>
+                <div class="endereco-texto">
+                    Av. Gov. Agamenon Magalhães, S/N - Salgadinho, Olinda - PE, 53110-710
                 </div>
 
-                <!-- Nome da Formanda -->
-                <h1 class="font-vibes text-5xl sm:text-6xl text-[#6B1D2F] mb-1 drop-shadow-sm">
-                    Dra. Samara Costa
-                </h1>
-                <p class="font-cinzel text-xs sm:text-sm tracking-[0.25em] text-[#8A2B42] uppercase font-semibold mb-6">
-                    Convida para sua Formatura em Odontologia
-                </p>
 
-                <!-- Data Principal -->
-                <div class="w-full max-w-xs mx-auto mb-6">
-                    <div class="border-t border-b border-[#D4AF37] py-2 my-2">
-                        <p class="font-cinzel text-base sm:text-lg font-bold text-[#4A111F] tracking-wide">
-                            19 DE DEZEMBRO DE 2026
-                        </p>
-                    </div>
+                <!-- Texto de Confirmação -->
+                <div class="nota-confirmacao">
+                    Confirme sua presença até 01 de Dezembro pelo número 81 99618-5926 Te espero lá!
                 </div>
 
-                <!-- Local e Horário -->
-                <div class="mb-6 space-y-1">
-                    <p class="font-cinzel font-semibold text-lg text-[#6B1D2F]">
-                        ÀS 20H • CLASSIC HALL
-                    </p>
-                    <p class="font-montserrat text-xs sm:text-sm text-gray-600 max-w-xs leading-relaxed px-2">
-                        Av. Gov. Agamenon Magalhães, S/N - Salgadinho, Olinda - PE, 53110-710
-                    </p>
+                <!-- Contador Regressivo Compacto -->
+                <div class="timer-container">
+                    <div class="timer-unidade"><span id="dias">00</span>d</div>
+                    <div class="timer-unidade"><span id="horas">00</span>h</div>
+                    <div class="timer-unidade"><span id="minutos">00</span>m</div>
                 </div>
 
-                <!-- Botão Ver Localização -->
-                <a href="https://maps.google.com/?q=Classic+Hall+Olinda+PE" target="_blank" 
-                   class="inline-flex items-center gap-2 px-6 py-3 bg-[#6B1D2F] text-gold font-cinzel text-xs font-bold tracking-widest rounded-full shadow-lg hover:bg-[#8A2B42] transition-all transform hover:scale-105 mb-6 border border-gold/40">
-                    <i class="fa-solid fa-location-dot"></i> Ver Localização no Mapa
-                </a>
+                <!-- Botões de Ação Interativos -->
+                <div class="botoes-wrapper">
+                    <a href="https://wa.me." 
+                       target="_blank" rel="noopener noreferrer" class="btn-link btn-wpp">
+                        <svg class="icone-svg" viewBox="0 0 24 24">
+                            <path d="M12,2A10,10 0 0,0 2,12C2,14.88 3.53,17.41 5.82,18.84L4.82,22L8.1,21C9.28,21.6 10.6,22 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M17.42,15.77C17.18,16.44 16.29,17 15.6,17.15C15.09,17.26 14.41,17.37 12.16,16.43C9.28,15.24 7.42,12.3 7.28,12.11C7.14,11.93 6.12,10.57 6.12,9.17C6.12,7.77 6.84,7.09 7.13,6.8C7.37,6.56 7.77,6.44 8.15,6.44C8.27,6.44 8.38,6.45 8.47,6.45C8.72,6.46 8.85,6.48 9.03,6.91C9.25,7.44 9.79,8.75 9.86,8.9C9.93,9.05 10,9.25 9.9,9.45C9.8,9.64 9.71,9.75 9.57,9.91C9.43,10.07 9.3,10.21 9.15,10.37C9,10.53 8.85,10.71 9.03,11C9.22,11.34 9.84,12.35 10.75,13.16C11.93,14.21 12.91,14.56 13.23,14.7C13.53,14.83 13.71,14.8 13.89,14.6C14.11,14.35 14.85,13.47 15.08,13.13C15.31,12.8 15.53,12.91 15.86,13C16.19,13.14 17.95,14 18.31,14.19C18.67,14.37 18.91,14.46 19,14.61C19.09,14.77 19.09,15.14 18.85,15.77H17.42Z"/>
+                        </svg>
 
-                <!-- Confirmação de Presença -->
-                <div class="bg-[#FDF8F9] border border-[#EED7DB] rounded-2xl p-5 w-full max-w-sm shadow-sm mb-6">
-                    <p class="font-montserrat text-xs sm:text-sm text-[#4A111F] leading-relaxed mb-4">
-                        Confirme sua presença até <strong class="text-[#6B1D2F]">01 de Dezembro</strong> pelo número <span class="whitespace-nowrap font-semibold">81 99618-5962</span>. Te espero lá!
-                    </p>
-                    
-                    <button onclick="openRSVPModal()" class="w-full py-3 bg-gradient-to-r from-[#D4AF37] to-[#AA771C] text-[#3b0a14] font-cinzel text-xs font-bold tracking-widest rounded-xl shadow-md hover:brightness-110 transition-all flex items-center justify-center gap-2">
-                        <i class="fa-brands fa-whatsapp text-base"></i> Confirmar Presença via WhatsApp
-                    </button>
+                        Confirmar via WhatsApp
+                    </a>
+
+                    <a href="https://www.google.com/maps/search/?api=1&query=Classic+Hall+Olinda" 
+                       target="_blank" rel="noopener noreferrer" class="btn-link btn-maps">
+                        <svg class="icone-svg" viewBox="0 0 24 24">
+                            <path d="M12,2A7,7 0 0,0 5,9C5,14.25 12,22 12,22C12,22 19,14.25 19,9A7,7 0 0,0 12,2M12,4A5,5 0 0,1 17,9C17,12.5 13.62,17.44 12,19.44C10.38,17.44 7,12.5 7,9A5,5 0 0,1 12,4M12,7A2,2 0 0,0 10,9A2,2 0 0,0 12,11A2,2 0 0,0 14,9A2,2 0 0,0 12,7Z"/>
+                        </svg>
+                        Como Chegar (Maps)
+                    </a>
                 </div>
 
-                <!-- Rodapé -->
-                <div class="text-[10px] font-montserrat text-gray-400 tracking-wider pb-4">
-                    ODONTOLOGIA • 2026
-                </div>
+                <!-- Folha Decorativa Inferior Direita -->
+                <svg class="folha-decorativa folha-direita" viewBox="0 0 100 100">
+                    <use href="#ramo-ilustracao-dir" />
+                </svg>
+            </div>
 
+            <!-- Estrutura do mapa em segundo plano -->
+
+            <div class="hidden-map">
+                <iframe src="https://www.google.com/maps/embed/v1/place?key=__CODING_CANVAS_MAPS_EMBED_API_KEY__&q=Classic+Hall,Olinda,PE" width="100%" height="150" frameborder="0"></iframe>
             </div>
         </div>
-
-        <!-- MODAL DE CONFIRMAÇÃO (RSVP) -->
-        <div id="rsvp-modal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 hidden">
-            <div class="bg-white rounded-3xl max-w-sm w-full p-6 shadow-2xl border-2 border-gold relative">
-                <button onclick="closeRSVPModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-700 w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center font-bold">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
-
-                <div class="text-center mb-5">
-                    <div class="w-12 h-12 rounded-full bg-[#6B1D2F]/10 text-[#6B1D2F] flex items-center justify-center mx-auto mb-3 text-xl">
-                        <i class="fa-solid fa-envelope-open-text"></i>
-                    </div>
-                    <h3 class="font-cinzel text-xl font-bold text-[#6B1D2F]">Confirmação de Presença</h3>
-                    <p class="font-montserrat text-xs text-gray-500 mt-1">Preencha seus dados para enviar a confirmação via WhatsApp.</p>
-                </div>
-
-                <div class="space-y-4">
-                    <div>
-                        <label class="block font-cinzel text-xs font-semibold text-[#6B1D2F] mb-1">Nome Completo do Convidado</label>
-                        <input type="text" id="guest-name" placeholder="Digite seu nome completo" 
-                               class="w-full px-4 py-2.5 text-sm rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#6B1D2F] font-montserrat">
-                    </div>
-
-                    <div>
-                        <label class="block font-cinzel text-xs font-semibold text-[#6B1D2F] mb-1">Você comparecerá?</label>
-                        <select id="guest-status" class="w-full px-4 py-2.5 text-sm rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#6B1D2F] font-montserrat bg-white">
-                            <option value="Sim, estarei presente! 🎓">Sim, estarei presente! 🎓</option>
-                            <option value="Infelizmente não poderei comparecer.">Infelizmente não poderei comparecer.</option>
-                        </select>
-                    </div>
-
-                    <button onclick="sendWhatsAppMessage()" class="w-full py-3.5 bg-[#6B1D2F] text-gold font-cinzel text-xs font-bold tracking-widest rounded-xl shadow-lg hover:bg-[#8A2B42] transition-all flex items-center justify-center gap-2 mt-2">
-                        <i class="fa-brands fa-whatsapp text-lg"></i> Enviar Mensagem para a Formanda
-                    </button>
-                </div>
-            </div>
-        </div>
-
     </div>
 
     <script>
-        function openEnvelope() {
-            const flap = document.getElementById('envelope-flap');
-            const envelopeScreen = document.getElementById('envelope-screen');
-            const invitationScreen = document.getElementById('invitation-screen');
-
-            // Anima a aba do envelope
-            flap.classList.add('open-flap');
-
-            // Transição para revelar o convite
-            setTimeout(() => {
-                envelopeScreen.style.opacity = '0';
-                setTimeout(() => {
-                    envelopeScreen.style.display = 'none';
-                    invitationScreen.style.pointerEvents = 'auto';
-                    invitationScreen.style.opacity = '1';
-                }, 500);
-            }, 600);
-        }
-
-        function openRSVPModal() {
-            document.getElementById('rsvp-modal').classList.remove('hidden');
-        }
-
-        function closeRSVPModal() {
-            document.getElementById('rsvp-modal').classList.add('hidden');
-        }
-
-        function sendWhatsAppMessage() {
-            const name = document.getElementById('guest-name').value.trim();
-            const status = document.getElementById('guest-status').value;
-
-            if (!name) {
-                showToast("Por favor, digite seu nome completo.");
-                return;
-            }
-
-            const phone = "5581996185962";
-            const message = `Olá, Dra. Samara! Meu nome é *${name}*. ${status} Confirmei minha presença através do convite digital. Nos vemos na formatura! 🎉`;
-            const encodedMessage = encodeURIComponent(message);
+        function abrirConvite() {
+            const envelope = document.getElementById('envelope');
+            const instrucao = document.getElementById('txtInstrucao');
             
-            const whatsappUrl = `https://wa.me/${phone}?text=${encodedMessage}`;
-            window.open(whatsappUrl, '_blank');
-            closeRSVPModal();
+            envelope.classList.add('aberto');
+            instrucao.style.display = 'none';
         }
 
-        function showToast(text) {
-            const existing = document.getElementById('custom-toast');
-            if (existing) existing.remove();
+        // Lógica do Timer para 19/12/2026
+        const targetDate = new Date("Dec 19, 2026 20:00:00").getTime();
 
-            const toast = document.createElement('div');
-            toast.id = 'custom-toast';
-            toast.className = 'fixed top-6 left-1/2 transform -translate-x-1/2 z-50 bg-[#6B1D2F] text-white px-6 py-3 rounded-2xl shadow-2xl border border-gold font-montserrat text-xs flex items-center gap-3 animate-pulse';
-            toast.innerHTML = `<i class="fa-solid fa-circle-exclamation text-gold text-base"></i> <span>${text}</span>`;
-            document.body.appendChild(toast);
+        const interval = setInterval(function() {
 
-            setTimeout(() => {
-                toast.remove();
-            }, 3500);
-        }
+            const now = new Date().getTime();
+            const diff = targetDate - now;
+
+            const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+
+            document.getElementById("dias").innerHTML = d < 10 ? "0" + d : d;
+            document.getElementById("horas").innerHTML = h < 10 ? "0" + h : h;
+            document.getElementById("minutos").innerHTML = m < 10 ? "0" + m : m;
+
+            if (diff < 0) {
+                clearInterval(interval);
+                document.getElementById("dias").innerHTML = "00";
+                document.getElementById("horas").innerHTML = "00";
+                document.getElementById("minutos").innerHTML = "00";
+            }
+        }, 1000);
     </script>
 </body>
 </html>
+
+
