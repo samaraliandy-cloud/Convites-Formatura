@@ -111,10 +111,9 @@
 </head>
 <body class="bg-gradient-to-br from-gray-900 via-[#1a0508] to-gray-950 min-h-screen flex items-center justify-center p-2 sm:p-4 font-sans relative overflow-x-hidden">
 
-    <!-- Elemento de Áudio HTML5 com link direto e estável para a música One Last Time (Ariana Grande) -->
-    <audio id="bgMusic" loop preload="auto">
-        <source src="https://cdns.jukehost.co.uk/v1/files/b4c8a2b5e610d7a12a32c25e8395f32a51460d3c.mp3" type="audio/mpeg">
-        <source src="https://actions.google.com/sounds/v1/ambiences/coffee_shop.ogg" type="audio/ogg">
+    <!-- Áudio HTML5 e Elemento Web Audio -->
+    <audio id="bgMusic" loop preload="auto" crossorigin="anonymous">
+        <source src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf7f6.mp3?filename=gentle-piano-ambient-111195.mp3" type="audio/mpeg">
     </audio>
 
     <div class="absolute inset-0 opacity-10 pointer-events-none bg-[radial-gradient(#D4AF37_1px,transparent_1px)] [background-size:24px_24px]"></div>
@@ -155,7 +154,7 @@
                         <div class="w-6 h-6 rounded-full gold-bg flex items-center justify-center text-vinho-dark">
                             <i id="musicIcon" class="fa-solid fa-play text-[10px]"></i>
                         </div>
-                        <span id="musicText">Tocar "One Last Time" - Ariana Grande</span>
+                        <span id="musicText">Tocar Piano Instrumental</span>
                     </button>
                 </div>
             </div>
@@ -270,7 +269,7 @@
                         clique para abrir
                     </span>
                     <span class="text-[10px] text-vinho font-bold block bg-white/80 px-2 py-0.5 rounded shadow">
-                        🎵 Toca com Música
+                        🎹 Toca com Piano Suave
                     </span>
                 </div>
             </div>
@@ -306,6 +305,48 @@
     <!-- Scripts de Interação -->
     <script>
         let musicPlaying = false;
+        let audioCtx = null;
+        let synthInterval = null;
+
+        // Melodia de piano relaxante sintetizada por Web Audio API
+        function playGentlePianoSynthesizer() {
+            try {
+                if (!audioCtx) {
+                    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                }
+                if (audioCtx.state === 'suspended') {
+                    audioCtx.resume();
+                }
+
+                const notes = [
+                    {f: 523.25, d: 0.8}, {f: 659.25, d: 0.8}, {f: 783.99, d: 1.4},
+                    {f: 587.33, d: 0.8}, {f: 659.25, d: 0.8}, {f: 523.25, d: 1.4},
+                    {f: 440.00, d: 0.8}, {f: 523.25, d: 0.8}, {f: 659.25, d: 1.4}
+                ];
+
+                let time = audioCtx.currentTime;
+                notes.forEach(note => {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(note.f, time);
+                    
+                    gain.gain.setValueAtTime(0.15, time);
+                    gain.gain.exponentialRampToValueAtTime(0.0001, time + note.d);
+                    
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    
+                    osc.start(time);
+                    osc.stop(time + note.d);
+                    
+                    time += note.d + 0.1;
+                });
+            } catch(e) {
+                console.log("Audio synthesis notice:", e);
+            }
+        }
         
         function toggleMusic() {
             const audio = document.getElementById('bgMusic');
@@ -313,19 +354,29 @@
             const text = document.getElementById('musicText');
 
             if (!musicPlaying) {
+                playGentlePianoSynthesizer();
+                if(!synthInterval) {
+                    synthInterval = setInterval(playGentlePianoSynthesizer, 8000);
+                }
+
                 audio.play().then(() => {
                     musicPlaying = true;
-                    icon.className = "fa-solid fa-pause text-[10px]";
-                    text.textContent = "Pausar música (Ariana Grande)";
+                    if(icon) icon.className = "fa-solid fa-pause text-[10px]";
+                    if(text) text.textContent = "Pausar piano";
                 }).catch(err => {
-                    console.log("Erro ao reproduzir áudio:", err);
-                    alert("Por favor, clique novamente no botão para iniciar a música.");
+                    musicPlaying = true;
+                    if(icon) icon.className = "fa-solid fa-pause text-[10px]";
+                    if(text) text.textContent = "Pausar piano";
                 });
             } else {
                 audio.pause();
+                if(synthInterval) {
+                    clearInterval(synthInterval);
+                    synthInterval = null;
+                }
                 musicPlaying = false;
-                icon.className = "fa-solid fa-play text-[10px]";
-                text.textContent = "Tocar \"One Last Time\" - Ariana Grande";
+                if(icon) icon.className = "fa-solid fa-play text-[10px]";
+                if(text) text.textContent = "Tocar Piano Instrumental";
             }
         }
 
@@ -335,17 +386,27 @@
             const carta = document.getElementById('cartaContent');
             const audio = document.getElementById('bgMusic');
 
-            // Tenta reproduzir a música imediatamente ao abrir
+            playGentlePianoSynthesizer();
+            if(!synthInterval) {
+                synthInterval = setInterval(playGentlePianoSynthesizer, 8000);
+            }
+
             audio.play().then(() => {
                 musicPlaying = true;
                 const icon = document.getElementById('musicIcon');
                 const text = document.getElementById('musicText');
                 if(icon && text) {
                     icon.className = "fa-solid fa-pause text-[10px]";
-                    text.textContent = "Pausar música (Ariana Grande)";
+                    text.textContent = "Pausar piano";
                 }
             }).catch(e => {
-                console.log("Autoplay bloqueado pelo navegador. O usuário pode tocar no botão de música no topo.");
+                musicPlaying = true;
+                const icon = document.getElementById('musicIcon');
+                const text = document.getElementById('musicText');
+                if(icon && text) {
+                    icon.className = "fa-solid fa-pause text-[10px]";
+                    text.textContent = "Pausar piano";
+                }
             });
 
             wrapper.classList.add('open-envelope');
